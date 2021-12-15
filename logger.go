@@ -10,7 +10,9 @@ var Say *zap.SugaredLogger
 
 // 避免异常，在第一次调用时初始化一个只打印到控制台的logger
 func init() {
-	InitLogger(LogConfig{Mode: Dev, LokiEnable: false, FileEnable: false})
+	if Say == nil {
+		InitLogger(LogConfig{Mode: Dev, LokiEnable: false, FileEnable: false})
+	}
 }
 
 // InitLogger 初始化日志工具
