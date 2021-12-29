@@ -69,14 +69,13 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 		return 0, err
 	}
 
-	label := model.LabelSet{"job": model.LabelValue(config.LokiName)}
-	label["source"] = model.LabelValue(config.LokiName)
+	label := model.LabelSet{"job": model.LabelValue(config.LokiJob)}
+	label["source"] = model.LabelValue(config.LokiSource)
 	label["level"] = model.LabelValue(li.Level)
 	label["caller"] = model.LabelValue(li.Caller)
 	// 异步推送消息到服务器
 	go func() {
-		err = lokiClient.Handle(label, time.Now().Local(), li.Msg)
-		if err != nil {
+		if err = lokiClient.Handle(label, time.Now().Local(), li.Msg); err != nil {
 			fmt.Printf("日志推送到Loki失败: %v\n", err.Error())
 		}
 	}()

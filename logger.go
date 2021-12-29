@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"fmt"
+	"github.com/caarlos0/env/v6"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,7 +13,13 @@ var Say *zap.SugaredLogger
 // 避免异常，在第一次调用时初始化一个只打印到控制台的logger
 func init() {
 	if Say == nil {
-		InitLogger(LogConfig{Mode: Dev, LokiEnable: false, FileEnable: false})
+		// 从环境变量读取配置
+		var c LogConfig
+		if err := env.Parse(&c); err != nil {
+			fmt.Println("日志配置解析错误: " + err.Error())
+			c = LogConfig{Mode: Dev, LokiEnable: false, FileEnable: false}
+		}
+		InitLogger(c)
 	}
 }
 
