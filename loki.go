@@ -26,8 +26,6 @@ func initLokiCore() zapcore.Core {
 
 	// 自定义时间输出格式
 	customTimeEncoder := func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-		aa := t.Format("2006-01-02 15:04:05.000")
-		fmt.Println(aa)
 		enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 	}
 
