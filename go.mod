@@ -3,17 +3,17 @@ module gitee.ltd/lxh/logger
 go 1.17
 
 require (
+	github.com/caarlos0/env/v6 v6.8.0
 	github.com/go-kit/kit v0.10.0
 	github.com/lixh00/loki-client-go v1.0.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible
-	github.com/prometheus/common v0.30.0
-	go.uber.org/zap v1.19.1
+	github.com/prometheus/common v0.32.0
+	go.uber.org/zap v1.20.0
 )
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/caarlos0/env/v6 v6.8.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.0 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect

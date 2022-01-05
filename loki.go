@@ -26,13 +26,15 @@ func initLokiCore() zapcore.Core {
 
 	// 自定义时间输出格式
 	customTimeEncoder := func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+		aa := t.Format("2006-01-02 15:04:05.000")
+		fmt.Println(aa)
 		enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 	}
 
 	// 格式相关的配置
 	encoderConfig := zap.NewProductionEncoderConfig()
 	// 修改时间戳的格式
-	encoderConfig.EncodeTime = customTimeEncoder
+	encoderConfig.EncodeTime = customTimeEncoder // zapcore.EpochNanosTimeEncoder
 	// 日志级别使用大写
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	// 将日志级别设置为 DEBUG
@@ -75,7 +77,11 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 	label["caller"] = model.LabelValue(li.Caller)
 	// 异步推送消息到服务器
 	go func() {
-		if err = lokiClient.Handle(label, time.Now().Local(), li.Msg); err != nil {
+		t, e := time.ParseInLocation("2006-01-02 15:04:05.000", li.Ts, time.Local)
+		if e != nil {
+			t = time.Now().Local()
+		}
+		if err = lokiClient.Handle(label, t, li.Msg); err != nil {
 			fmt.Printf("日志推送到Loki失败: %v\n", err.Error())
 		}
 	}()
