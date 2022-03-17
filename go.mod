@@ -9,6 +9,8 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/prometheus/common v0.32.0
 	go.uber.org/zap v1.20.0
+	gorm.io/driver/mysql v1.3.2
+	gorm.io/gorm v1.23.2
 )
 
 require (
@@ -16,9 +18,12 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.0 // indirect
+	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/golang/snappy v0.0.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
