@@ -55,7 +55,7 @@ func (l gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (strin
 	sql, rows := fc()
 	msg := fmt.Sprintf("[%v] [rows:%v] %s", elapsed.String(), rows, sql)
 	if rows == -1 {
-		msg = fmt.Sprintf("%s [-] %s", elapsed.String(), sql)
+		msg = fmt.Sprintf("[%s] [-] %s", elapsed.String(), sql)
 	}
 
 	switch {
