@@ -8,7 +8,7 @@ require (
 	github.com/lixh00/loki-client-go v1.0.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/prometheus/common v0.32.0
-	go.uber.org/zap v1.20.0
+	go.uber.org/zap v1.21.0
 	gorm.io/driver/mysql v1.3.2
 	gorm.io/gorm v1.23.2
 )
