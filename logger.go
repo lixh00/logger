@@ -8,11 +8,11 @@ import (
 )
 
 var config LogConfig
-var Say *zap.SugaredLogger
+var initialized bool
 
 // 避免异常，在第一次调用时初始化一个只打印到控制台的logger
 func init() {
-	if Say == nil {
+	if !initialized {
 		// 从环境变量读取配置
 		var c LogConfig
 		if err := env.Parse(&c); err != nil {
@@ -48,7 +48,7 @@ func InitLogger(c LogConfig) {
 	// 增加 caller 信息
 	// AddCallerSkip 输出的文件名和行号是调用封装函数的位置，而不是调用日志函数的位置
 	logger := zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
-	Say = logger.Sugar()
+	initialized = true
 	// 给GORM单独生成一个
 	gormZap = zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(3)).Sugar()
 	zap.ReplaceGlobals(logger)

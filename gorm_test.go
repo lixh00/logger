@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"gitee.ltd/lxh/logger/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"testing"
@@ -11,7 +12,7 @@ func TestGormLogger(t *testing.T) {
 
 	engine, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: DefaultGormLogger()})
 	if err != nil {
-		Say.Panicf("mysql connect error: %s", err.Error())
+		log.Panicf("mysql connect error: %s", err.Error())
 	}
 
 	var count int64
