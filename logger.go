@@ -49,5 +49,7 @@ func InitLogger(c LogConfig) {
 	// AddCallerSkip 输出的文件名和行号是调用封装函数的位置，而不是调用日志函数的位置
 	logger := zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
 	Say = logger.Sugar()
+	// 给GORM单独生成一个
+	gormZap = zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(3)).Sugar()
 	zap.ReplaceGlobals(logger)
 }

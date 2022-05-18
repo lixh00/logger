@@ -4,9 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.uber.org/zap"
 	gl "gorm.io/gorm/logger"
 	"time"
 )
+
+var gormZap *zap.SugaredLogger
 
 // 基于Gorm的日志实现
 type gormLogger struct {
@@ -25,7 +28,7 @@ func (l gormLogger) Info(ctx context.Context, msg string, data ...interface{}) {
 	if l.LogLevel >= gl.Info {
 		//	// 去掉第一行
 		//	msg = strings.Join(strings.Split(msg, "\n")[1:], " ")
-		//	Say.Info(msg)
+		//	gormZap.Info(msg)
 		//
 		//	l.Printf(msg, append([]interface{}{utils.FileWithLineNum()}, data...)...)
 	}
@@ -60,12 +63,12 @@ func (l gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (strin
 
 	switch {
 	case err != nil && l.LogLevel >= gl.Error && (!errors.Is(err, gl.ErrRecordNotFound) || !l.IgnoreRecordNotFoundError):
-		Say.Errorf("%s -> %s", err.Error(), sql)
+		gormZap.Errorf("%s -> %s", err.Error(), sql)
 	case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.LogLevel >= gl.Warn:
 		slowLog := fmt.Sprintf("SLOW SQL >= %v", l.SlowThreshold)
-		Say.Warnf("%v -> %v", slowLog, sql)
+		gormZap.Warnf("%v -> %v", slowLog, sql)
 	case l.LogLevel == gl.Info:
-		Say.Info(msg)
+		gormZap.Info(msg)
 	}
 }
 
