@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"go.uber.org/zap"
+	"gitee.ltd/lxh/logger/log"
 	"testing"
 	"time"
 )
@@ -18,6 +18,6 @@ func TestLogger1(t *testing.T) {
 
 func TestLogger2(t *testing.T) {
 	InitLogger(LogConfig{Mode: Dev, LokiEnable: false, FileEnable: true})
-	zap.S().Info("我是测试消息")
-	time.Sleep(5 * time.Second)
+	log.Info("我是测试消息")
+	//time.Sleep(5 * time.Second)
 }

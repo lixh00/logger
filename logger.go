@@ -47,7 +47,7 @@ func InitLogger(c LogConfig) {
 
 	// 增加 caller 信息
 	// AddCallerSkip 输出的文件名和行号是调用封装函数的位置，而不是调用日志函数的位置
-	logger := zap.New(zapcore.NewTee(cores...), zap.AddCaller())
+	logger := zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
 	Say = logger.Sugar()
 	zap.ReplaceGlobals(logger)
 }
