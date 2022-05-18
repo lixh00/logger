@@ -5,17 +5,20 @@
 ```go
 package main
 
-import "gitee.ltd/lxh/logger"
+import (
+	"gitee.ltd/lxh/logger"
+	"gitee.ltd/lxh/logger/log"
+)
 
 func main() {
 	logger.InitLogger(logger.LogConfig{Mode: logger.Dev, LokiEnable: false, FileEnable: true})
-	logger.Say.Debug("芜湖")
+	log.Debug("芜湖")
 }
 ```
 
 ### 环境变量
 ```shell
-export LOG_MODE=0 # 0: dev, 1: prod
+export LOG_MODE=0 # development | production
 export LOG_LOKI_ENABLE=1 # 是否启用Loki 0: disable, 1: enable
 export LOG_FILE_ENABLE=0 # 是否启用输出到文件 0: disable, 1: enable
 export LOG_LOKI_HOST=10.0.0.31 # Loki地址
