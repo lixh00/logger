@@ -44,4 +44,5 @@ func InitLogger(c LogConfig) {
 	// 增加 caller 信息
 	logger := zap.New(zapcore.NewTee(cores...), zap.AddCaller())
 	Say = logger.Sugar()
+	zap.ReplaceGlobals(logger)
 }
