@@ -19,6 +19,10 @@ func init() {
 			fmt.Println("日志配置解析错误: " + err.Error())
 			c = LogConfig{Mode: Dev, LokiEnable: false, FileEnable: false}
 		}
+		// 如果值错了，直接默认为Prod
+		if c.Mode != Dev && c.Mode != Prod {
+			c.Mode = Prod
+		}
 		InitLogger(c)
 	}
 }
