@@ -79,10 +79,15 @@ func NewGormLoggerWithConfig(config gl.Config) gl.Interface {
 
 // DefaultGormLogger 默认的日志实现
 func DefaultGormLogger() gl.Interface {
+	// 默认日志级别为Info，如果是生产环境，就是Error
+	logLevel := gl.Info
+	if config.Mode == Prod {
+		logLevel = gl.Error
+	}
 	return &gormLogger{gl.Config{
 		SlowThreshold:             time.Second, // Slow SQL threshold
 		IgnoreRecordNotFoundError: false,       // 忽略没找到结果的错误
-		LogLevel:                  gl.Info,     // Log level
+		LogLevel:                  logLevel,    // Log level
 		Colorful:                  false,       // Disable color
 	}}
 }
