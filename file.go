@@ -5,17 +5,19 @@ import (
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
 	"time"
 )
 
 // 初始化LokiCore，使日志可以输出到文件
 func initFileCore() zapcore.Core {
+	hostname, _ := os.Hostname()
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "logs/runtime.log", // 日志文件的位置
-		MaxSize:    10,                 // 最大10M
-		MaxBackups: 5,                  // 保留旧文件的最大个数
-		MaxAge:     30,                 // 保留旧文件的最大天数
-		Compress:   false,              // 是否压缩/归档旧文件
+		Filename:   fmt.Sprintf("logs/runtime-%s.log", hostname), // 日志文件的位置
+		MaxSize:    10,                                           // 最大10M
+		MaxBackups: 5,                                            // 保留旧文件的最大个数
+		MaxAge:     30,                                           // 保留旧文件的最大天数
+		Compress:   false,                                        // 是否压缩/归档旧文件
 	}
 	// 配置 sugaredLogger
 	writer := zapcore.AddSync(lumberJackLogger)
