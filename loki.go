@@ -75,7 +75,6 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 	label["level"] = model.LabelValue(li.Level)
 	label["caller"] = model.LabelValue(li.Caller)
 
-	// 异步推送消息到服务器
 	_ = ants.Submit(func() {
 		t, e := time.ParseInLocation("2006-01-02 15:04:05.000", li.Ts, time.Local)
 		if e != nil {
@@ -85,8 +84,6 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 			fmt.Printf("日志推送到Loki失败: %v\n", err.Error())
 		}
 	})
-
-	defer ants.Release()
 
 	return 0, nil
 }
