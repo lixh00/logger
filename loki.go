@@ -10,7 +10,6 @@ import (
 	"github.com/prometheus/common/model"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"sync"
 	"time"
 )
 
@@ -77,10 +76,7 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 	label["caller"] = model.LabelValue(li.Caller)
 
 	// 异步推送消息到服务器
-	var wg sync.WaitGroup
-	wg.Add(1)
 	_ = ants.Submit(func() {
-		defer wg.Done()
 		t, e := time.ParseInLocation("2006-01-02 15:04:05.000", li.Ts, time.Local)
 		if e != nil {
 			t = time.Now().Local()
@@ -89,7 +85,8 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 			fmt.Printf("日志推送到Loki失败: %v\n", err.Error())
 		}
 	})
-	wg.Wait()
+
+	defer ants.Release()
 
 	return 0, nil
 }
