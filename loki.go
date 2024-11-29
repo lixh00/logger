@@ -1,14 +1,16 @@
 package logger
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/bytedance/sonic"
 	"github.com/go-kit/kit/log"
 	"github.com/lixh00/loki-client-go/loki"
+	"github.com/panjf2000/ants/v2"
 	"github.com/prometheus/common/model"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"sync"
 	"time"
 )
 
@@ -64,7 +66,7 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 		Msg    string `json:"msg"`    // 日志内容
 	}
 	var li logInfo
-	err := json.Unmarshal(p, &li)
+	err := sonic.Unmarshal(p, &li)
 	if err != nil {
 		return 0, err
 	}
@@ -73,8 +75,12 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 	label["source"] = model.LabelValue(config.LokiSource)
 	label["level"] = model.LabelValue(li.Level)
 	label["caller"] = model.LabelValue(li.Caller)
+
 	// 异步推送消息到服务器
-	go func() {
+	var wg sync.WaitGroup
+	wg.Add(1)
+	_ = ants.Submit(func() {
+		defer wg.Done()
 		t, e := time.ParseInLocation("2006-01-02 15:04:05.000", li.Ts, time.Local)
 		if e != nil {
 			t = time.Now().Local()
@@ -82,7 +88,8 @@ func (c lokiWriter) Write(p []byte) (int, error) {
 		if err = lokiClient.Handle(label, t, li.Msg); err != nil {
 			fmt.Printf("日志推送到Loki失败: %v\n", err.Error())
 		}
-	}()
+	})
+	wg.Wait()
 
 	return 0, nil
 }
