@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/bytedance/sonic"
 	"github.com/go-kit/kit/log"
-	"github.com/lixh00/loki-client-go/loki"
+	"github.com/grafana/loki-client-go/loki"
 	"github.com/panjf2000/ants/v2"
 	"github.com/prometheus/common/model"
 	"go.uber.org/zap"
@@ -44,7 +44,7 @@ func initLokiCore() zapcore.Core {
 func initLokiClient() {
 	// 如果Loki配置错误，返回一个nil
 	if config.LokiHost == "" || config.LokiPort < 1 {
-		panic(errors.New("Loki配置错误"))
+		panic(errors.New("loki配置错误"))
 	}
 	// 初始化配置
 	cfg, _ := loki.NewDefaultConfig(config.getLokiPushURL())
