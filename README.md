@@ -13,7 +13,7 @@
 
 ## 安装方法
 ```go
-go get gitea.mrx.ltd/pkg/zap_logger
+go get gitee.ltd/lxh/logger/v2
 ```
 
 ## 快速开始
