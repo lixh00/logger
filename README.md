@@ -25,7 +25,7 @@ go get gitee.ltd/lxh/logger/v2
 package main
 
 import (
-  "gitea.mrx.ltd/pkg/zap_logger"
+  "gitee.ltd/lxh/logger/v2"
   "go.uber.org/zap"
 )
 
@@ -128,7 +128,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 
 ```go
 import (
-  "gitea.mrx.ltd/pkg/zap_logger"
+  "gitee.ltd/lxh/logger/v2"
 )
 
 func main() {
