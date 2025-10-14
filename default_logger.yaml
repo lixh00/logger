@@ -1,0 +1,40 @@
+# 通用配置
+logger:
+  # 编码方式 json 或者 console
+  encoder: json
+  # 日志级别
+  level: info
+
+# 文件形式
+file:
+  # 是否开启
+  enable: false
+  # 文件名称,不填写则默认生成,生成的格式为 app-[host-name]-日期.log,例如 app-ubuntu-20250530.log
+  name:
+  # 单文件最大大小 (M)
+  max_size: 10
+  # 单文件保存最长时间 (天)
+  max_age: 7
+  # 单文件最大备份数量
+  max_backups: 5
+  # 备份时间戳
+  localtime: true
+  # 是否启用备份压缩
+  compress: true
+
+# 控制台
+console:
+  # 是否启用
+  enable: true
+  # 开启颜色
+  color: false
+
+# Loki推送
+loki:
+  enable: false
+  host: http://localhost
+  port: 3100
+  source: logger_source
+  service: logger_service
+  job: logger_job
+  environment: logger_environment
