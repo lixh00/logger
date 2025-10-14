@@ -49,6 +49,7 @@ func main() {
 logger:
   encoder: "json"       # 全局编码器 (json/console)
   level: "info"         # 全局日志级别
+  stack_level: "panic"
 
 file:
   enable: true          # 启用文件输出,默认关闭
@@ -84,10 +85,11 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 ## 配置说明
 
 ### 全局配置 (logger)
-| 字段名   | 类型   | 说明                          | 可选值                 | 默认值    |
-|----------|--------|-------------------------------|------------------------|-----------|
-| encoder  | string | 全局日志编码器                | "json", "console"      | "console" |
-| level    | string | 全局日志级别                  | "debug", "info", "warn", "error", "dpanic", "panic", "fatal" | "info"    |
+| 字段名         | 类型   | 说明      | 可选值                 | 默认值       |
+|-------------|--------|---------|------------------------|-----------|
+| encoder     | string | 全局日志编码器 | "json", "console"      | "console" |
+| level       | string | 全局日志级别  | "debug", "info", "warn", "error", "dpanic", "panic", "fatal" | "info"    |
+| stack_level | string | 堆栈打印级别  | "info", "warn", "error", "dpanic", "panic", "fatal" | "panic"   |
 
 ### 文件输出配置 (file)
 | 字段名        | 类型   | 说明                          | 默认值                          |
@@ -149,26 +151,27 @@ func main() {
 
 完整选项列表：
 
-| 函数名                     | 说明                          | 参数类型/示例                  |
-|----------------------------|-------------------------------|--------------------------------|
-| WithEncoder                | 设置全局编码器                | JsonEncoder/ConsoleEncoder     |
-| WithLevel                  | 设置全局日志级别              | "debug", "info", "warn"等      |
-| WithEnableFile             | 启用/禁用文件输出             | true/false                     |
-| WithFilename               | 设置日志文件名                | "app.log"                      |
-| WithFileMaxSize            | 设置文件最大尺寸(MB)          | 20                             |
-| WithFileMaxAge             | 设置日志保留天数              | 15                             |
-| WithFileMaxBackups         | 设置最大备份数量              | 10                             |
-| WithFileLocaltime          | 备份文件使用本地时间          | true/false                     |
-| WithFileCompress           | 启用/禁用备份压缩             | true/false                     |
-| WithConsoleEnable          | 启用/禁用控制台输出           | true/false                     |
-| WithConsoleEnableColor     | 启用/禁用控制台彩色输出       | true/false                     |
-| WithLokiEnable             | 启用/禁用Loki输出             | true/false                     |
-| WithLokiHost               | 设置Loki服务主机              | "loki.example.com"             |
-| WithLokiPort               | 设置Loki服务端口              | 3100                           |
-| WithLokiSource             | 设置日志来源标识              | "payment-service"              |
-| WithLokiService            | 设置服务名称标签              | "api"                          |
-| WithLokiJob                | 设置任务名称标签              | "backend"                      |
-| WithLokiEnvironment        | 设置环境标识标签              | "production"                   |
+| 函数名                    | 说明          | 参数类型/示例                                            |
+|------------------------|-------------|----------------------------------------------------|
+| WithEncoder            | 设置全局编码器     | JsonEncoder/ConsoleEncoder                         |
+| WithLevel              | 设置全局日志级别    | "debug", "info", "warn"等                           |
+| WithStackLevel         | 设置堆栈打印级别    | "debug", "info", "warn", "error", "panic", "fatal" |
+| WithEnableFile         | 启用/禁用文件输出   | true/false                                         |
+| WithFilename           | 设置日志文件名     | "app.log"                                          |
+| WithFileMaxSize        | 设置文件最大尺寸(MB) | 20                                                 |
+| WithFileMaxAge         | 设置日志保留天数    | 15                                                 |
+| WithFileMaxBackups     | 设置最大备份数量    | 10                                                 |
+| WithFileLocaltime      | 备份文件使用本地时间  | true/false                                         |
+| WithFileCompress       | 启用/禁用备份压缩   | true/false                                         |
+| WithConsoleEnable      | 启用/禁用控制台输出  | true/false                                         |
+| WithConsoleEnableColor | 启用/禁用控制台彩色输出 | true/false                                         |
+| WithLokiEnable         | 启用/禁用Loki输出 | true/false                                         |
+| WithLokiHost           | 设置Loki服务主机  | "loki.example.com"                                 |
+| WithLokiPort           | 设置Loki服务端口  | 3100                                               |
+| WithLokiSource         | 设置日志来源标识    | "payment-service"                                  |
+| WithLokiService        | 设置服务名称标签    | "api"                                              |
+| WithLokiJob            | 设置任务名称标签    | "backend"                                          |
+| WithLokiEnvironment    | 设置环境标识标签    | "production"                                       |
 
 ## 高级使用示例
 
@@ -179,6 +182,7 @@ func main() {
 logger:
   encoder: "json"
   level: "info"
+  stack_level: "panic"
 
 file:
   enable: true

@@ -1,9 +1,11 @@
 # 通用配置
 logger:
   # 编码方式 json 或者 console
-  encoder: json
+  encoder: console
   # 日志级别
   level: info
+  # 堆栈输出级别
+  stack_level: panic
 
 # 文件形式
 file:
