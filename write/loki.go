@@ -81,6 +81,7 @@ func (lw *LokiWriter) Write(p []byte) (int, error) {
 		builder.WriteString(li.Msg)
 		builder.WriteString("     ")
 		if li.Stacktrace != nil {
+			builder.WriteString("\n")
 			builder.WriteString(li.Stacktrace.(string))
 		}
 
