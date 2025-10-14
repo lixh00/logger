@@ -34,7 +34,7 @@ loki:
   enable: false
   host: http://localhost
   port: 3100
-  source: logger_source
-  service: logger_service
-  job: logger_job
-  environment: logger_environment
+  source: app
+  service: api
+  job: backend
+  environment: develop
