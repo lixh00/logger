@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	customencoder "gitee.ltd/lxh/logger/v2/encoder"
+	customencoder "code.mrx.ltd/pkg/logger/encoder"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

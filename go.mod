@@ -1,4 +1,4 @@
-module gitee.ltd/lxh/logger/v2
+module code.mrx.ltd/pkg/logger
 
 go 1.25
 
