@@ -8,8 +8,9 @@ type Config struct {
 }
 
 type Logger struct {
-	Encoder string `yaml:"encoder"`
-	Level   string `yaml:"level"`
+	Encoder    string `yaml:"encoder"`
+	Level      string `yaml:"level"`
+	StackLevel string `yaml:"stack_level"`
 }
 
 type File struct {

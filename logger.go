@@ -3,6 +3,7 @@ package zap_logger
 import (
 	"errors"
 	"os"
+	"strings"
 
 	_ "embed"
 
@@ -68,11 +69,27 @@ func NewZapLogger(filePath string, opts ...Option) error {
 		cores = append(cores, newConsoleLogger(config.Console).Init())
 	}
 
+	var stackLevel zapcore.Level
+	switch strings.ToLower(config.Logger.StackLevel) {
+	case "info":
+		stackLevel = zap.InfoLevel
+	case "warn":
+		stackLevel = zap.WarnLevel
+	case "error":
+		stackLevel = zap.ErrorLevel
+	case "panic":
+		stackLevel = zap.DPanicLevel
+	case "fatal":
+		stackLevel = zap.FatalLevel
+	default:
+		stackLevel = zap.DPanicLevel
+	}
+
 	logger := zap.New(
-		zapcore.NewTee(cores...),          // 开启的日志核心
-		zap.AddCaller(),                   // 启用调用者信息
-		zap.AddCallerSkip(1),              // 调用者信息跳过
-		zap.AddStacktrace(zap.ErrorLevel), // 开启panic日志错误堆栈收集
+		zapcore.NewTee(cores...),      // 开启的日志核心
+		zap.AddCaller(),               // 启用调用者信息
+		zap.AddCallerSkip(1),          // 调用者信息跳过
+		zap.AddStacktrace(stackLevel), // 开启panic日志错误堆栈收集
 	)
 	zap.ReplaceGlobals(logger)
 	return nil
