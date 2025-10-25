@@ -11,6 +11,14 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var DefaultGormLogger = NewGormLogger(logger.Config{
+	SlowThreshold:             2 * time.Second,
+	Colorful:                  false,
+	IgnoreRecordNotFoundError: false,
+	ParameterizedQueries:      false,
+	LogLevel:                  logger.Info,
+})
+
 type gormLogger struct{ logger.Config }
 
 func NewGormLogger(gl logger.Config) *gormLogger {

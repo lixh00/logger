@@ -3,7 +3,7 @@ package zap_logger
 import (
 	"testing"
 
-	"gitee.ltd/lxh/logger/v2/log"
+	"code.mrx.ltd/pkg/logger/log"
 )
 
 func TestNewZapLogger(t *testing.T) {
@@ -12,7 +12,7 @@ func TestNewZapLogger(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	
+
 	log.Info("hahahahah")
 	log.Error("123321")
 	log.Panic("this is panic")
