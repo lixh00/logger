@@ -84,10 +84,11 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 ## 配置说明
 
 ### 全局配置 (logger)
-| 字段名   | 类型   | 说明                          | 可选值                 | 默认值    |
-|----------|--------|-------------------------------|------------------------|-----------|
-| encoder  | string | 全局日志编码器                | "json", "console"      | "console" |
-| level    | string | 全局日志级别                  | "debug", "info", "warn", "error", "dpanic", "panic", "fatal" | "info"    |
+| 字段名         | 类型   | 说明       | 可选值                 | 默认值       |
+|-------------|--------|----------|------------------------|-----------|
+| encoder     | string | 全局日志编码器  | "json", "console"      | "console" |
+| level       | string | 全局日志级别   | "debug", "info", "warn", "error", "dpanic", "panic", "fatal" | "info"    |
+| stack_level | string | 全局堆栈打印级别 | "warn", "error", "dpanic", "panic", "fatal" | "panic"   |
 
 ### 文件输出配置 (file)
 | 字段名        | 类型   | 说明                          | 默认值                          |

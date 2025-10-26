@@ -4,6 +4,7 @@ logger:
   encoder: json
   # 日志级别
   level: info
+  # 堆栈打印级别
   stack_level: panic
 
 # 文件形式
