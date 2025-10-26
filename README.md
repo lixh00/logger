@@ -13,7 +13,7 @@
 
 ## 安装方法
 ```go
-go get gitea.mrx.ltd/pkg/zap_logger
+go get code.mrx.ltd/pkg/zap_logger
 ```
 
 ## 快速开始
@@ -25,7 +25,7 @@ go get gitea.mrx.ltd/pkg/zap_logger
 package main
 
 import (
-  "gitea.mrx.ltd/pkg/zap_logger"
+  "code.mrx.ltd/pkg/zap_logger"
   "go.uber.org/zap"
 )
 
@@ -128,7 +128,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 
 ```go
 import (
-  "gitea.mrx.ltd/pkg/zap_logger"
+  "code.mrx.ltd/pkg/zap_logger"
 )
 
 func main() {
