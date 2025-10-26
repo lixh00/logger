@@ -1,4 +1,4 @@
-module code.mrx.ltd/pkg/logger
+module code.mrx.ltd/pkg/zap_logger
 
 go 1.25
 
