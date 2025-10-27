@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewZapLogger(t *testing.T) {
-	err := NewZapLogger("", WithEncoder(JsonEncoder))
+	err := NewZapLogger("", WithEncoder(ConsoleEncoder))
 	if err != nil {
 		t.Fatal(err)
 		return

@@ -21,6 +21,12 @@ func WithLevel(level string) Option {
 	}
 }
 
+func WithStackLevel(level string) Option {
+	return func(conf *Config) {
+		conf.Logger.StackLevel = level
+	}
+}
+
 func WithEnableFile(enable bool) Option {
 	return func(conf *Config) {
 		conf.File.Enable = enable

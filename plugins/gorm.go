@@ -1,4 +1,4 @@
-package zap_logger
+package plugins
 
 import (
 	"context"
@@ -19,36 +19,36 @@ var DefaultGormLogger = NewGormLogger(logger.Config{
 	LogLevel:                  logger.Info,
 })
 
-type gormLogger struct{ logger.Config }
+type gormLoggerPlugin struct{ logger.Config }
 
-func NewGormLogger(gl logger.Config) *gormLogger {
-	return &gormLogger{gl}
+func NewGormLogger(gl logger.Config) *gormLoggerPlugin {
+	return &gormLoggerPlugin{gl}
 }
 
-func (g *gormLogger) LogMode(level logger.LogLevel) logger.Interface {
+func (g *gormLoggerPlugin) LogMode(level logger.LogLevel) logger.Interface {
 	g.LogLevel = level
 	return g
 }
 
-func (g *gormLogger) Info(ctx context.Context, msg string, args ...interface{}) {
+func (g *gormLoggerPlugin) Info(ctx context.Context, msg string, args ...interface{}) {
 	if g.LogLevel >= logger.Info {
 		log.Infof(msg, args...)
 	}
 }
 
-func (g *gormLogger) Warn(ctx context.Context, msg string, args ...interface{}) {
+func (g *gormLoggerPlugin) Warn(ctx context.Context, msg string, args ...interface{}) {
 	if g.LogLevel >= logger.Warn {
 		log.Warnf(msg, args...)
 	}
 }
 
-func (g *gormLogger) Error(ctx context.Context, msg string, args ...interface{}) {
+func (g *gormLoggerPlugin) Error(ctx context.Context, msg string, args ...interface{}) {
 	if g.LogLevel >= logger.Error {
 		log.Errorf(msg, args...)
 	}
 }
 
-func (g *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
+func (g *gormLoggerPlugin) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
 	if g.LogLevel <= logger.Silent {
 		return
 	}
