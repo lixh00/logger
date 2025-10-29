@@ -29,13 +29,13 @@ type FormatFunc func(logParam LogParam) string
 
 type Skipper func(c *gin.Context) bool
 
-var defaultConfig = &Config{
+var defaultConfig = &GinLogConfig{
 	TimeFormat:      "2006-01-02 15:04:05.000",
 	SkipPaths:       nil,
 	SkipPathRegexps: nil,
 	DefaultLevel:    zapcore.InfoLevel,
 	Skipper:         nil,
-	formatFunc:      defaultFormatFunc,
+	FormatFunc:      defaultFormatFunc,
 	HideKeys:        []string{"header"},
 }
 
@@ -67,13 +67,13 @@ var defaultFormatFunc FormatFunc = func(logParam LogParam) string {
 	return builder.String()
 }
 
-type Config struct {
+type GinLogConfig struct {
 	TimeFormat      string   // custom time format default: 2006-01-02 15:04:05.000
 	SkipPaths       []string // skip path
 	SkipPathRegexps []*regexp.Regexp
 	DefaultLevel    zapcore.Level
 	Skipper         Skipper
-	formatFunc      FormatFunc
+	FormatFunc      FormatFunc
 	HideKeys        []string // current only use 'header' 'errors'
 }
 
@@ -83,11 +83,11 @@ func GinZap() gin.HandlerFunc {
 
 func GinZapWithFormat(formatFunc FormatFunc) gin.HandlerFunc {
 	conf := defaultConfig
-	conf.formatFunc = formatFunc
+	conf.FormatFunc = formatFunc
 	return GinZapWithConfig(conf)
 }
 
-func GinZapWithConfig(conf *Config) gin.HandlerFunc {
+func GinZapWithConfig(conf *GinLogConfig) gin.HandlerFunc {
 	skipPaths := make(map[string]bool, len(conf.SkipPaths))
 	for _, path := range conf.SkipPaths {
 		skipPaths[path] = true
@@ -96,8 +96,8 @@ func GinZapWithConfig(conf *Config) gin.HandlerFunc {
 		conf.TimeFormat = "2006-01-02 15:04:05.000"
 	}
 
-	if conf.formatFunc == nil {
-		conf.formatFunc = defaultFormatFunc
+	if conf.FormatFunc == nil {
+		conf.FormatFunc = defaultFormatFunc
 	}
 
 	return func(c *gin.Context) {
@@ -138,7 +138,7 @@ func GinZapWithConfig(conf *Config) gin.HandlerFunc {
 			}
 
 			if !slices.Contains(conf.HideKeys, "header") {
-				headerJson, _ := json.Marshal(logParam.Header)
+				headerJson, _ := json.Marshal(c.Request.Header)
 				logParam.Header = string(headerJson)
 			}
 			if !slices.Contains(conf.HideKeys, "error") {
@@ -150,9 +150,9 @@ func GinZapWithConfig(conf *Config) gin.HandlerFunc {
 			}
 
 			if len(c.Errors.Errors()) > 0 {
-				log.Error(conf.formatFunc(logParam))
+				log.Error(conf.FormatFunc(logParam))
 			} else {
-				log.Info(conf.formatFunc(logParam))
+				log.Info(conf.FormatFunc(logParam))
 			}
 		}
 	}
