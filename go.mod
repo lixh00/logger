@@ -3,6 +3,7 @@ module code.mrx.ltd/pkg/zap_logger
 go 1.25
 
 require (
+	github.com/gin-gonic/gin v1.11.0
 	github.com/grafana/loki-client-go v0.0.0-20240913122146-e119d400c3a5
 	github.com/prometheus/common v0.48.0
 	go.uber.org/zap v1.27.0
@@ -21,7 +22,6 @@ require (
 	github.com/dennwc/varint v1.0.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
-	github.com/gin-gonic/gin v1.11.0 // indirect
 	github.com/go-kit/kit v0.10.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
