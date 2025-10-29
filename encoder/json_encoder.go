@@ -65,6 +65,7 @@ func (e *jsonEncoder) formatStacktrace(originalBuf *buffer.Buffer) (*buffer.Buff
 	newBuf := e.pool.Get()
 	encoder := json.NewEncoder(newBuf)
 	encoder.SetEscapeHTML(true)
+	encoder.SetIndent("", "    ")
 	if err := encoder.Encode(jsonData); err != nil {
 		return nil, err
 	}
