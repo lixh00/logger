@@ -1,9 +1,11 @@
 # zap_logger 日志组件库使用文档
 
 ## 项目概述
+
 `zap_logger` 是一个基于 [Zap](https://github.com/uber-go/zap) 的日志组件库，提供灵活的多输出目标支持、可定制的日志格式和级别控制，以及与 Loki 日志系统的集成能力。该库旨在简化 Go 应用程序的日志配置流程，满足不同环境下的日志收集需求。
 
 ## 核心功能
+
 - **多输出目标**：同时支持控制台输出、文件输出和 Loki 日志系统
 - **灵活配置**：通过 YAML 配置文件或代码选项动态调整日志行为
 - **日志轮转**：文件日志自动轮转，支持大小限制、备份数量和压缩
@@ -12,6 +14,7 @@
 - **默认配置**：内置合理默认值，零配置快速启动
 
 ## 安装方法
+
 ```go
 go get code.mrx.ltd/pkg/zap_logger
 ```
@@ -19,6 +22,7 @@ go get code.mrx.ltd/pkg/zap_logger
 ## 快速开始
 
 ### 默认配置
+
 无需任何配置文件，直接初始化即可使用默认配置（控制台输出，Info级别，Console编码）：
 
 ```go
@@ -34,7 +38,6 @@ func main() {
   if err := zap_logger.NewZapLogger(""); err != nil {
     panic(err)
   }
- 
 
   // 使用全局日志器
   log.Info("这是一条info级别的日志")
@@ -43,12 +46,14 @@ func main() {
 ```
 
 ### 自定义配置文件
+
 创建 YAML 配置文件（如 `logger.yaml`）：
 
 ```yaml
 logger:
   encoder: "json"       # 全局编码器 (json/console)
   level: "info"         # 全局日志级别
+  stack_level: panic    # 全局堆栈打印级别，触发panic及以上级别日志时打印堆栈跟踪
 
 file:
   enable: true          # 启用文件输出,默认关闭
@@ -84,6 +89,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 ## 配置说明
 
 ### 全局配置 (logger)
+
 | 字段名         | 类型   | 说明       | 可选值                 | 默认值       |
 |-------------|--------|----------|------------------------|-----------|
 | encoder     | string | 全局日志编码器  | "json", "console"      | "console" |
@@ -91,6 +97,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 | stack_level | string | 全局堆栈打印级别 | "warn", "error", "dpanic", "panic", "fatal" | "panic"   |
 
 ### 文件输出配置 (file)
+
 | 字段名        | 类型   | 说明                          | 默认值                          |
 |---------------|--------|-------------------------------|---------------------------------|
 | enable        | bool   | 是否启用文件输出              | false                           |
@@ -104,6 +111,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 | compress      | bool   | 是否压缩备份文件              | false                           |
 
 ### 控制台输出配置 (console)
+
 | 字段名   | 类型   | 说明                          | 默认值               |
 |----------|--------|-------------------------------|-------------------|
 | enable   | bool   | 是否启用控制台输出            | true              |
@@ -112,6 +120,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 | color    | bool   | 是否启用彩色输出              | false             |
 
 ### Loki输出配置 (loki)
+
 | 字段名        | 类型   | 说明                          | 默认值                          |
 |---------------|--------|-------------------------------|---------------------------------|
 | enable        | bool   | 是否启用Loki输出              | false                           |
@@ -125,6 +134,7 @@ if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
 | environment   | string | 环境标识标签                  | ""                              |
 
 ## 代码配置选项
+
 除了配置文件外，还可以通过代码选项动态调整配置：
 
 ```go
@@ -174,6 +184,7 @@ func main() {
 ## 高级使用示例
 
 ### 多输出组合
+
 同时启用文件和Loki输出，禁用控制台：
 
 ```yaml
@@ -197,7 +208,82 @@ loki:
 ```
 
 ## 注意事项
+
 1. 配置优先级：代码选项 > 配置文件 > 默认配置
 2. 日志级别：如果全局级别高于输出特定级别，以全局级别为准
 3. Loki依赖：使用Loki输出时需确保Loki服务可访问
 4. 错误处理：NewZapLogger返回的错误需妥善处理，避免日志初始化失败
+
+## 框架集成插件
+
+### Gin 中间件集成
+
+`zap_logger` 提供了 Gin 框架的日志中间件，可自动记录 HTTP 请求信息：
+
+```go
+import (
+  "code.mrx.ltd/pkg/zap_logger"
+  "code.mrx.ltd/pkg/zap_logger/plugins"
+  "github.com/gin-gonic/gin"
+)
+
+func main() {
+  // 初始化日志
+  if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
+    panic(err)
+  }
+
+  r := gin.Default()
+  // 添加Gin日志中间件
+  r.Use(plugins.GinZap())
+
+  // 自定义日志格式示例
+  customFormat := func(param plugins.LogParam) string {
+    return fmt.Sprintf("[%s] %s %s %d %s",
+      param.Time, param.Method, param.Path, param.StatusCode, param.Latency)
+  }
+  r.Use(plugins.GinZapWithFormat(customFormat))
+
+  r.Run()
+}
+```
+
+中间件默认记录：时间、状态码、响应耗时、客户端IP、请求方法、路径和用户代理信息。
+
+### GORM 日志插件
+
+集成 GORM ORM 框架的日志插件，可记录 SQL 执行情况：
+
+```go
+import (
+  "code.mrx.ltd/pkg/zap_logger"
+  "code.mrx.ltd/pkg/zap_logger/plugins"
+  "gorm.io/driver/mysql"
+  "gorm.io/gorm"
+)
+
+func main() {
+  // 初始化日志
+  if err := zap_logger.NewZapLogger("logger.yaml"); err != nil {
+    panic(err)
+  }
+
+  // 配置GORM使用zap_logger
+  db, err := gorm.Open(mysql.Open("dsn"), &gorm.Config{
+    Logger: plugins.DefaultGormLogger, // 使用默认配置
+  })
+
+  // 自定义GORM日志配置
+  customLogger := plugins.NewGormLogger(plugins.logger.Config{
+    SlowThreshold:             3 * time.Second, // 慢查询阈值
+    LogLevel:                  plugins.logger.Warn, // 日志级别
+    IgnoreRecordNotFoundError: true, // 忽略记录不存在错误
+  })
+
+  db, err = gorm.Open(mysql.Open("dsn"), &gorm.Config{
+    Logger: customLogger,
+  })
+}
+```
+
+GORM 插件默认记录：SQL 语句、执行时间、影响行数，支持慢查询告警和错误日志分级。
