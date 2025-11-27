@@ -3,7 +3,7 @@ package zap_logger
 import (
 	"testing"
 
-	"code.mrx.ltd/pkg/zap_logger/log"
+	"gitee.ltd/lxh/logger/v2/log"
 )
 
 func TestNewZapLogger(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	customencoder "code.mrx.ltd/pkg/zap_logger/encoder"
-	"code.mrx.ltd/pkg/zap_logger/write"
+	customencoder "gitee.ltd/lxh/logger/v2/encoder"
+	"gitee.ltd/lxh/logger/v2/write"
 	"github.com/grafana/loki-client-go/loki"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

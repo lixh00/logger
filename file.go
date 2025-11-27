@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 
-	customencoder "code.mrx.ltd/pkg/zap_logger/encoder"
+	customencoder "gitee.ltd/lxh/logger/v2/encoder"
 )
 
 type fileLogger struct {

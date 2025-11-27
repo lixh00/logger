@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"code.mrx.ltd/pkg/zap_logger/log"
+	"gitee.ltd/lxh/logger/v2/log"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )

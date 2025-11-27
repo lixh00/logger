@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"code.mrx.ltd/pkg/zap_logger/log"
+	"gitee.ltd/lxh/logger/v2/log"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap/zapcore"
 )
