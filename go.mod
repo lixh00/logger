@@ -1,6 +1,6 @@
 module gitee.ltd/lxh/logger
 
-go 1.25
+go 1.24.0
 
 require (
 	github.com/bytedance/sonic v1.14.2
